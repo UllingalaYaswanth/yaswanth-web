@@ -73,7 +73,8 @@ export const App: React.FC = () => {
       .to('.hero-role', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, 0.45)
       .to('.hero .desc', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, 0.6)
       .to('.hero-actions', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, 0.75)
-      .to('.hero .socials', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, 0.9);
+      .to('.hero .socials', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, 0.9)
+      .to('.hero-visual', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1 }, 0.5);
 
     // Refresh triggers to compute target viewport positions
     ScrollTrigger.refresh();
