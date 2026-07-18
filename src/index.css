@@ -1324,11 +1324,24 @@ footer {
   transform-style: preserve-3d;
 }
 
+/* Dark gradient vignette to blend the image background */
+.profile-card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  background: linear-gradient(to top, rgba(10, 15, 30, 0.88) 0%, rgba(10, 15, 30, 0.3) 40%, rgba(10, 15, 30, 0) 100%),
+              radial-gradient(circle at center, rgba(10, 15, 30, 0) 40%, rgba(10, 15, 30, 0.45) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
 .profile-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 28px;
+  filter: contrast(1.06) brightness(0.94) saturate(0.96) sepia(0.04);
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   pointer-events: none;
 }

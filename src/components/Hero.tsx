@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMagnetic } from '../hooks/useMagnetic';
-import profileImg from '../assets/profile2.png';
+import profileImg from '../assets/yaswanth_profile.jpeg';
 import gsap from 'gsap';
 
 export const Hero: React.FC = () => {
