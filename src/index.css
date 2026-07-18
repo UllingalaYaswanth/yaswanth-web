@@ -1428,4 +1428,9 @@ footer {
   .scroll-hint {
     display: none;
   }
+  .reveal {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
 }
