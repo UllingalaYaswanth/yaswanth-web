@@ -77,7 +77,7 @@ export const Projects: React.FC = () => {
         <span className="section-tag reveal">Selected Work</span>
         <h2 className="section-title reveal">Products, not just pages.</h2>
         <p className="section-sub reveal">
-          A few projects that show the range — AI platforms, real‑time marketplaces, and geospatial digital twins.
+          A few projects that show the range -  AI platforms, real‑time marketplaces, and geospatial digital twins.
         </p>
         
         <div className="bento" id="bentoGrid">

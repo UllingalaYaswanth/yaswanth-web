@@ -134,7 +134,9 @@ export const Hero: React.FC = () => {
             </a>
             <a
               ref={downloadResumeRef}
-              href="#"
+              href="https://www.dropbox.com/scl/fi/cge27vpwhbmebio3w61lg/yaswanth_resume.pdf?dl=1&e=3&rlkey=jjxmih5vf7fwoulxokba5j837&st=8ir27uyc"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn btn-outline"
               id="resumeBtn"
               onClick={handleRipple}
