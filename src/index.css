@@ -1407,7 +1407,7 @@ footer {
     gap: 56px;
     text-align: center;
     padding-top: 20px;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
   }
   .hero-actions, .socials {
     justify-content: center;
@@ -1424,5 +1424,8 @@ footer {
   }
   .badge-tech {
     right: -15px;
+  }
+  .scroll-hint {
+    display: none;
   }
 }
