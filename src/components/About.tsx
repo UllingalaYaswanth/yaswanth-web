@@ -49,7 +49,7 @@ export const About: React.FC = () => {
           <span className="section-tag reveal">About</span>
           <h2 className="section-title reveal">Frontend engineering, grounded in real product problems.</h2>
           <p className="section-sub reveal">
-            I'm Ullingala Yaswanth, a frontend developer focused on building interactive, high‑performance interfaces — from AI concierge platforms to digital‑twin visualizations. I care about the details that separate a good UI from a forgettable one: motion timing, state clarity, and code that stays fast as it scales.
+            I'm Ullingala Yaswanth, a frontend developer focused on building interactive, high‑performance interfaces from AI concierge platforms to digital‑twin visualizations. I care about the details that separate a good UI from a forgettable one: motion timing, state clarity, and code that stays fast as it scales.
           </p>
           <div style={{ marginTop: '26px' }} className="reveal">
             <span className="focus-pill">

@@ -15,7 +15,7 @@ const projectsData: Project[] = [
     stats: [['3.2x', 'Perceived speed'], ['40%', 'Fewer tickets'], ['99.9%', 'Uptime']],
     snippet: `const stream = await bedrock.invokeStream({\n  prompt, context: chromaResults\n});\nfor await (const chunk of stream) {\n  appendToken(chunk.text);\n}`,
     liveUrl: 'https://miftah.ai/',
-    image: '/projects/miftah.png'
+    image: 'projects/miftah.png'
   },
   {
     title: 'SellAnyHome.ai',
@@ -30,7 +30,7 @@ const projectsData: Project[] = [
     stats: [['<150ms', 'Update latency'], ['2x', 'Conversion lift'], ['0', 'Desync bugs']],
     snippet: `socket.on('offer:update', (payload) => {\n  dispatch(reconcileOffer(payload));\n});`,
     liveUrl: 'https://www.sellanyhome.ai/',
-    image: '/projects/sellanyhome.png'
+    image: 'projects/sellanyhome.png'
   },
   {
     title: 'Digital Twin & Asset Management',
@@ -45,7 +45,7 @@ const projectsData: Project[] = [
     stats: [['60fps', 'Globe render'], ['75%', 'Faster lookup'], ['3', 'Teams onboarded']],
     snippet: `const tileset = await Cesium3DTileset.fromUrl(url);\nviewer.scene.primitives.add(tileset);`,
     liveUrl: 'https://dt.intelliod.com/',
-    image: '/projects/digitaltwin.png'
+    image: 'projects/digitaltwin.png'
   },
   {
     title: 'Neural Farms',
@@ -60,7 +60,7 @@ const projectsData: Project[] = [
     stats: [['1000+', 'Live sensors'], ['30%', 'Water saved'], ['<2s', 'Alert latency']],
     snippet: `onSnapshot(sensorsRef, (snap) => {\n  store.setSensors(snap.docs.map(toSensor));\n});`,
     liveUrl: 'https://nf.intelliod.com/',
-    image: '/projects/neuralfarms.png'
+    image: 'projects/neuralfarms.png'
   }
 ];
 

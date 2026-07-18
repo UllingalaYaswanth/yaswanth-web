@@ -112,9 +112,6 @@ export const Hero: React.FC = () => {
       <div className="container hero-container">
         {/* Left Column: Introduction */}
         <div className="hero-text">
-          <div className="eyebrow reveal">
-            <span className="dot" /> Open to opportunities · Based in India
-          </div>
           <h1 className="reveal">
             Hi, I'm <br />
             Yaswanth.
@@ -124,7 +121,7 @@ export const Hero: React.FC = () => {
             <span className="cursor-blink">&nbsp;</span>
           </div>
           <p className="desc reveal">
-            I build fast, elegant interfaces and AI‑integrated applications — from React design systems to real‑time GIS and digital‑twin platforms — with 3+ years shipping production frontend at scale.
+            I build fast, elegant interfaces and AI‑integrated applications from React design systems to real‑time GIS and digital‑twin platforms with 3+ years shipping production frontend at scale.
           </p>
           <div className="hero-actions reveal">
             <a
@@ -205,24 +202,6 @@ export const Hero: React.FC = () => {
             <div className="profile-card-glow" />
             <div className="profile-card-inner">
               <img src={profileImg} alt="Yaswanth Ullingala portrait" className="profile-img" />
-              
-              {/* Experience Floating Badge */}
-              <div className="floating-badge badge-exp">
-                <span className="badge-icon">💼</span>
-                <div>
-                  <span className="badge-title">3+ Years</span>
-                  <span className="badge-subtitle">Experience</span>
-                </div>
-              </div>
-              
-              {/* Tech Floating Badge */}
-              <div className="floating-badge badge-tech">
-                <span className="badge-icon">⚛️</span>
-                <div>
-                  <span className="badge-title">React / TS</span>
-                  <span className="badge-subtitle">Developer</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
