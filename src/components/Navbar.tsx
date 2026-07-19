@@ -3,7 +3,8 @@ import { useMagnetic } from '../hooks/useMagnetic';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const [isDark, setIsDark] = useState(() => {
     // Initialize theme based on document HTML class or system preference
     if (typeof window !== 'undefined') {
@@ -25,13 +26,6 @@ export const Navbar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
-
-      const h = document.documentElement;
-      const totalHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
-      if (totalHeight > 0) {
-        const progress = ((h.scrollTop || document.body.scrollTop) / totalHeight) * 100;
-        setScrollProgress(progress);
-      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -50,6 +44,59 @@ export const Navbar: React.FC = () => {
     }
   }, [isDark]);
 
+  useEffect(() => {
+    const sections = ['home', 'about', 'skills', 'experience', 'projects', 'contact'];
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0
+    });
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const lenisInstance = (window as any).lenis;
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      if (lenisInstance) lenisInstance.stop();
+    } else {
+      document.body.style.overflow = '';
+      if (lenisInstance) lenisInstance.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+      if (lenisInstance) lenisInstance.start();
+    };
+  }, [isMobileMenuOpen]);
+
+  const handleMobileLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+    const lenisInstance = (window as any).lenis;
+    if (lenisInstance) {
+      lenisInstance.start();
+      lenisInstance.scrollTo(id, { offset: -70 });
+    } else {
+      const el = document.querySelector(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const lenisInstance = (window as any).lenis;
@@ -65,29 +112,26 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Scroll Progress Bar */}
-      <div id="progress" style={{ width: `${scrollProgress}%` }} />
-
-      <nav className={isScrolled ? 'scrolled' : ''}>
+      <nav className={`${isScrolled ? 'scrolled' : ''} ${isMobileMenuOpen ? 'menu-open' : ''}`}>
         <div className="container nav-inner">
           <a href="#home" className="logo" onClick={(e) => scrollToSection(e, '#home')}>
             YASWANTH<span>.</span>
           </a>
 
           <div className="nav-links">
-            <a ref={aboutRef} href="#about" className="nav-link" onClick={(e) => scrollToSection(e, '#about')}>
+            <a ref={aboutRef} href="#about" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`} onClick={(e) => scrollToSection(e, '#about')}>
               About
             </a>
-            <a ref={skillsRef} href="#skills" className="nav-link" onClick={(e) => scrollToSection(e, '#skills')}>
+            <a ref={skillsRef} href="#skills" className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`} onClick={(e) => scrollToSection(e, '#skills')}>
               Skills
             </a>
-            <a ref={expRef} href="#experience" className="nav-link" onClick={(e) => scrollToSection(e, '#experience')}>
+            <a ref={expRef} href="#experience" className={`nav-link ${activeSection === 'experience' ? 'active' : ''}`} onClick={(e) => scrollToSection(e, '#experience')}>
               Experience
             </a>
-            <a ref={projRef} href="#projects" className="nav-link" onClick={(e) => scrollToSection(e, '#projects')}>
+            <a ref={projRef} href="#projects" className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`} onClick={(e) => scrollToSection(e, '#projects')}>
               Projects
             </a>
-            <a ref={contactRef} href="#contact" className="nav-link" onClick={(e) => scrollToSection(e, '#contact')}>
+            <a ref={contactRef} href="#contact" className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`} onClick={(e) => scrollToSection(e, '#contact')}>
               Contact
             </a>
           </div>
@@ -124,15 +168,49 @@ export const Navbar: React.FC = () => {
             <a
               ref={ctaRef}
               href="#contact"
-              className="nav-cta"
+              className={`nav-cta ${isScrolled ? 'visible' : ''}`}
               onClick={(e) => scrollToSection(e, '#contact')}
-              style={{ display: isScrolled ? 'block' : 'none' }}
             >
               Let's talk
             </a>
+
+            {/* Hamburger Mobile Menu Trigger */}
+            <button
+              className={`mobile-toggle-btn ${isMobileMenuOpen ? 'active' : ''}`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <span className="line"></span>
+              <span className="line"></span>
+              <span className="line"></span>
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-links">
+          <a href="#about" className={`mobile-menu-link ${activeSection === 'about' ? 'active' : ''}`} onClick={(e) => handleMobileLinkClick(e, '#about')}>
+            About
+          </a>
+          <a href="#skills" className={`mobile-menu-link ${activeSection === 'skills' ? 'active' : ''}`} onClick={(e) => handleMobileLinkClick(e, '#skills')}>
+            Skills
+          </a>
+          <a href="#experience" className={`mobile-menu-link ${activeSection === 'experience' ? 'active' : ''}`} onClick={(e) => handleMobileLinkClick(e, '#experience')}>
+            Experience
+          </a>
+          <a href="#projects" className={`mobile-menu-link ${activeSection === 'projects' ? 'active' : ''}`} onClick={(e) => handleMobileLinkClick(e, '#projects')}>
+            Projects
+          </a>
+          <a href="#contact" className={`mobile-menu-link ${activeSection === 'contact' ? 'active' : ''}`} onClick={(e) => handleMobileLinkClick(e, '#contact')}>
+            Contact
+          </a>
+          <a href="#contact" className="mobile-menu-cta" onClick={(e) => handleMobileLinkClick(e, '#contact')}>
+            Let's talk
+          </a>
+        </div>
+      </div>
     </>
   );
 };

@@ -25,21 +25,21 @@ export const Footer: React.FC = () => {
         <div className="container">
           <div className="footer-grid">
             {/* Left Column: Brand logo and info */}
-            <div>
+            <div className="footer-brand">
               <div className="logo" style={{ color: '#fff' }}>
                 YASWANTH<span>.</span>
               </div>
-              <p style={{ maxWidth: '320px', marginTop: '14px', fontSize: '.88rem', color: '#94A3B8', lineHeight: 1.7 }}>
+              <p className="footer-brand-desc">
                 Frontend developer crafting fast, elegant, AI‑integrated web experiences.
               </p>
             </div>
             
             {/* Right Column: Social Links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: '150px' }}>
-              <h4 style={{ color: '#fff', fontSize: '.82rem', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '.08em', fontWeight: 700 }}>
+            <div className="footer-socials">
+              <h4 className="footer-socials-title">
                 Connect
               </h4>
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="footer-socials-icons">
                 <a
                   ref={githubRef}
                   href="https://github.com/UllingalaYaswanth"

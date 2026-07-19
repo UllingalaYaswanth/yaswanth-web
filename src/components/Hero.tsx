@@ -105,9 +105,9 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="hero" id="home">
-      <div className="blob" style={{ width: '520px', height: '520px', background: '#3B82F6', top: '-10%', left: '-10%' }} />
-      <div className="blob" style={{ width: '460px', height: '460px', background: '#2563EB', bottom: '-15%', right: '-5%' }} />
-      <div className="blob" style={{ width: '300px', height: '300px', background: '#A855F7', top: '30%', left: '50%', transform: 'translate(-50%, -50%)', opacity: 0.12 }} />
+      <div className="blob" style={{ width: '520px', height: '520px', background: 'var(--blob-1)', top: '-10%', left: '-10%' }} />
+      <div className="blob" style={{ width: '460px', height: '460px', background: 'var(--blob-2)', bottom: '-15%', right: '-5%' }} />
+      <div className="blob" style={{ width: '300px', height: '300px', background: 'var(--blob-3)', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }} />
       
       <div className="container hero-container">
         {/* Left Column: Introduction */}
