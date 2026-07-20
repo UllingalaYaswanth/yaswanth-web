@@ -5,23 +5,87 @@ export const Contact: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [isSending, setIsSending] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
   const submitBtnRef = useMagnetic<HTMLButtonElement>();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSending(true);
     setShowSuccess(false);
+    setErrorMsg(null);
 
-    // Simulate sending progress matching the original code's 900ms delay
-    setTimeout(() => {
-      setIsSending(false);
-      setShowSuccess(true);
-      formRef.current?.reset();
+    const formEl = e.currentTarget;
+    const formData = new FormData(formEl);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
 
-      // Automatically hide success message after 5 seconds
-      setTimeout(() => setShowSuccess(false), 5000);
-    }, 900);
+    const brevoApiKey = import.meta.env.VITE_BREVO_API_KEY;
+    const senderName = import.meta.env.VITE_BREVO_SENDER_NAME || 'Yaswanth Portfolio';
+    const senderEmail = import.meta.env.VITE_BREVO_SENDER_EMAIL || 'yaswanthullingala@gmail.com';
+    const recipientEmail = import.meta.env.VITE_BREVO_RECIPIENT_EMAIL || 'yaswanthullingala@gmail.com';
+
+    if (brevoApiKey && brevoApiKey !== 'your_brevo_api_key_here') {
+      try {
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'accept': 'application/json',
+            'api-key': brevoApiKey,
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            sender: {
+              name: senderName,
+              email: senderEmail,
+            },
+            to: [
+              {
+                email: recipientEmail,
+                name: 'Yaswanth Ullingala',
+              },
+            ],
+            replyTo: {
+              email: email,
+              name: name,
+            },
+            subject: `Portfolio Contact Form: ${name}`,
+            htmlContent: `
+              <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                <h2 style="color: #2563eb;">New Contact Form Submission</h2>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+                <p><strong>Message:</strong></p>
+                <blockquote style="background: #f3f4f6; padding: 12px 16px; border-left: 4px solid #2563eb; margin: 0; white-space: pre-wrap;">${message}</blockquote>
+              </div>
+            `,
+          }),
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || `API error (${response.status})`);
+        }
+
+        setIsSending(false);
+        setShowSuccess(true);
+        formRef.current?.reset();
+        setTimeout(() => setShowSuccess(false), 5000);
+      } catch (err: any) {
+        console.error('Brevo Email Error:', err);
+        setIsSending(false);
+        setErrorMsg(err.message || 'Failed to send email. Please check Brevo credentials.');
+      }
+    } else {
+      // Demo fallback if API key is not configured yet
+      setTimeout(() => {
+        setIsSending(false);
+        setShowSuccess(true);
+        formRef.current?.reset();
+        setTimeout(() => setShowSuccess(false), 5000);
+      }, 900);
+    }
   };
 
   const handleRipple = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -129,6 +193,12 @@ export const Contact: React.FC = () => {
                 </svg>
                 Message sent — I'll get back to you soon.
               </div>
+
+              {errorMsg && (
+                <div style={{ marginTop: '16px', padding: '12px', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#ef4444', fontSize: '0.88rem', textAlign: 'center' }}>
+                  {errorMsg}
+                </div>
+              )}
             </form>
           </div>
         </div>
