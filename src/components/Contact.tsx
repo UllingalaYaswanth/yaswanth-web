@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { useMagnetic } from '../hooks/useMagnetic';
 
 export const Contact: React.FC = () => {
@@ -21,64 +22,36 @@ export const Contact: React.FC = () => {
     const email = formData.get('email') as string;
     const message = formData.get('message') as string;
 
-    const brevoApiKey = import.meta.env.VITE_BREVO_API_KEY;
-    const senderName = import.meta.env.VITE_BREVO_SENDER_NAME || 'Yaswanth Portfolio';
-    const senderEmail = import.meta.env.VITE_BREVO_SENDER_EMAIL || 'yaswanthullingala@gmail.com';
-    const recipientEmail = import.meta.env.VITE_BREVO_RECIPIENT_EMAIL || 'yaswanthullingala@gmail.com';
+    const emailjsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const emailjsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const emailjsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    if (brevoApiKey && brevoApiKey !== 'your_brevo_api_key_here') {
+    if (emailjsServiceId && emailjsTemplateId && emailjsPublicKey) {
       try {
-        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-          method: 'POST',
-          headers: {
-            'accept': 'application/json',
-            'api-key': brevoApiKey,
-            'content-type': 'application/json',
+        await emailjs.send(
+          emailjsServiceId,
+          emailjsTemplateId,
+          {
+            name: name,
+            email: email,
+            message: message,
+            time: new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }),
+            reply_to: email,
+            to_name: 'Yaswanth Ullingala',
           },
-          body: JSON.stringify({
-            sender: {
-              name: senderName,
-              email: senderEmail,
-            },
-            to: [
-              {
-                email: recipientEmail,
-                name: 'Yaswanth Ullingala',
-              },
-            ],
-            replyTo: {
-              email: email,
-              name: name,
-            },
-            subject: `Portfolio Contact Form: ${name}`,
-            htmlContent: `
-              <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                <h2 style="color: #2563eb;">New Contact Form Submission</h2>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Message:</strong></p>
-                <blockquote style="background: #f3f4f6; padding: 12px 16px; border-left: 4px solid #2563eb; margin: 0; white-space: pre-wrap;">${message}</blockquote>
-              </div>
-            `,
-          }),
-        });
-
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          throw new Error(errData.message || `API error (${response.status})`);
-        }
-
+          emailjsPublicKey
+        );
         setIsSending(false);
         setShowSuccess(true);
         formRef.current?.reset();
         setTimeout(() => setShowSuccess(false), 5000);
       } catch (err: any) {
-        console.error('Brevo Email Error:', err);
+        console.error('EmailJS Error:', err);
         setIsSending(false);
-        setErrorMsg(err.message || 'Failed to send email. Please check Brevo credentials.');
+        setErrorMsg(err.text || err.message || 'Failed to send email via EmailJS.');
       }
     } else {
-      // Demo fallback if API key is not configured yet
+      // Demo fallback simulation
       setTimeout(() => {
         setIsSending(false);
         setShowSuccess(true);
